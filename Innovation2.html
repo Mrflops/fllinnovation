@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Steering Code Explanation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #111;
+            color: #fff;
+            padding: 20px;
+        }
+
+        code {
+            background-color: #222;
+            padding: 5px;
+            border-radius: 5px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>Python Steering Code Explanation</h1>
+
+    <h2>Hand Gesture Steering Logic</h2>
+
+    <p>
+        The following Python code implements a steering logic based on hand gestures captured through a webcam.
+        It uses the `mediapipe` library for hand tracking and calculates the positions of specific landmarks to
+        determine steering actions.
+    </p>
+
+    <h3>Hand Gesture Processing</h3>
+
+    <p>
+        The code processes hand gestures by utilizing the `mediapipe` library to detect hand landmarks. The positions
+        of these landmarks are then used to determine specific steering actions, such as turning left, turning right,
+        going left aggressively, going right aggressively, or maintaining a straight direction.
+    </p>
+
+    <h4>Turning Left</h4>
+    <code>
+        if co[0][0] > co[1][0] and co[0][1] > co[1][1] and co[0][1] - co[1][1] > 65:
+            print("Turn left.")
+            monkey.release_key('s')
+            monkey.release_key('d')
+            monkey.press_key('a')
+    </code>
+
+    <!-- Repeat similar code blocks for other steering actions -->
+
+    <h4>Maintaining a Straight Direction</h4>
+    <code>
+        else:
+            print("keeping straight")
+            monkey.release_key('s')
+            monkey.release_key('a')
+            monkey.release_key('d')
+            monkey.press_key('w')
+    </code>
+
+    <h3>Visual Indicators</h3>
+
+    <p>
+        The code adds visual indicators on the image to represent the steering actions, providing feedback on the detected
+        gestures.
+    </p>
+
+    <pre>
+        cv2.putText(image, "^", (50, 50), font, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.line(image, (int(xbp), int(ybp)), (int(xm), int(ym)), (195, 255, 62), 20)
+    </pre>
+
+    <!-- Additional explanations and code snippets can be added as needed -->
+
+    <script>
+        // If you need to include any JavaScript
+    </script>
+</body>
+</html>

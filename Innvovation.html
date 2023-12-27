@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock-Paper-Scissors Game Code Explanation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #121212; /* Dark background color */
+            color: #ffffff; /* Light text color */
+        }
+
+        code {
+            display: block;
+            white-space: pre-wrap;
+            background-color: #1e1e1e; /* Dark code background color */
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #ffffff; /* Light code text color */
+        }
+
+        h2 {
+            color: #4CAF50;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        #nextButton {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            display: none;
+        }
+    </style>
+    <script>
+        var currentIndex = 0;
+
+        function showNextSection() {
+            var sections = document.querySelectorAll('.section');
+            if (currentIndex < sections.length) {
+                sections[currentIndex].style.display = 'block';
+                window.scrollBy(0, window.innerHeight); // Auto scroll down
+                currentIndex++;
+            }
+        }
+    </script>
+</head>
+<body>
+
+<h1>Rock-Paper-Scissors Game Code Explanation</h1>
+
+<!-- 1. Importing Libraries -->
+<div class="section">
+    <h2>1. Importing Libraries:</h2>
+    <code>
+        import cv2<br>
+        from cvzone.HandTrackingModule import HandDetector<br>
+        from cvzone.ClassificationModule import Classifier<br>
+        import numpy as np<br>
+        import math, random, time
+    </code>
+    <p>
+        - <strong>cv2</strong>: OpenCV library for computer vision tasks.<br>
+        - <strong>HandDetector</strong>: A module for hand tracking using OpenCV.<br>
+        - <strong>Classifier</strong>: A module for classifying hand gestures.<br>
+        - <strong>numpy</strong>: Library for numerical operations.<br>
+        - <strong>math</strong>: Python's math library.<br>
+        - <strong>random</strong>: Python's random number generation library.<br>
+        - <strong>time</strong>: Python's time-related library.
+    </p>
+</div>
+
+<!-- 2. Setting up Video Capture and Modules -->
+<div class="section">
+    <h2>2. Setting up Video Capture and Modules:</h2>
+    <code>
+        cap = cv2.VideoCapture(0)<br>
+        detector = HandDetector(maxHands=1)<br>
+        classifier = Classifier("Model/keras_model.h5", "Model/labels.txt")
+    </code>
+    <p>
+        - <strong>cap</strong>: Video capture object for accessing the webcam.<br>
+        - <strong>detector</strong>: HandDetector object for detecting hands in the webcam feed.<br>
+        - <strong>classifier</strong>: Classifier object for classifying hand gestures using a pre-trained model (keras_model.h5) and labels file (labels.txt).
+    </p>
+</div>
+
+<!-- 3. Initialization -->
+<div class="section">
+    <h2>3. Initialization:</h2>
+    <code>
+        offset = 20<br>
+        imgSize = 300<br>
+        <br>
+        counter = 0<br>
+        countDown = 0<br>
+        AIChoice = ''<br>
+        YourChoice = ''<br>
+        aScore = 0<br>
+        uScore = 0<br>
+        result = ''<br>
+        <br>
+        labels = ["Rock", "Paper", "Scissors"]
+    </code>
+    <p>
+        - <strong>offset</strong>: Padding around the hand region when cropping the image.<br>
+        - <strong>imgSize</strong>: Size of the image used for gesture classification.<br>
+        - <strong>counter</strong>, <strong>countDown</strong>: Counters for internal use.<br>
+        - <strong>AIChoice</strong>, <strong>YourChoice</strong>: Strings to store the choices of the AI and the user.<br>
+        - <strong>aScore</strong>, <strong>uScore</strong>: Scores for the AI and the user.<br>
+        - <strong>result</strong>: String to store the result of the current round.<br>
+        - <strong>labels</strong>: List of possible hand gesture labels ("Rock", "Paper", "Scissors").
+    </p>
+</div>
+
+<!-- 4. Main Loop -->
+<div class="section">
+    <h2>4. Main Loop:</h2>
+    <code>
+        while True:
+    </code>
+    <p>
+        - The main loop continuously captures frames from the webcam, processes them, and updates the game state.
+    </p>
+</div>
+
+<!-- 5. Reading Webcam Feed and Flipping Image -->
+<div class="section">
+    <h2>5. Reading Webcam Feed and Flipping Image:</h2>
+    <code>
+        success, img = cap.read()<br>
+        img = cv2.flip(img, 1)
+    </code>
+    <p>
+        - <strong>success</strong>: Boolean indicating whether the frame was successfully read.<br>
+        - <strong>img</strong>: Captured frame from the webcam.<br>
+        - The image is flipped horizontally (<strong>cv2.flip</strong>) since webcam feeds are often mirrored.
+    </p>
+</div>
+
+<!-- 6. Rendering Text on the Image -->
+<div class="section">
+    <h2>6. Rendering Text on the Image:</h2>
+    <code>
+        cv2.putText(imgOutput, "FLL 2023.24".format(), (360, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.88, (255, 255, 0), 2)<br>
+        <!-- ... (similar lines for other text) -->
+    </code>
+    <p>
+        - Adding various text information to the image, such as game title, scores, and results.
+    </p>
+</div>
+
+<!-- 7. Hand Detection and Gesture Classification -->
+<div class="section">
+    <h2>7. Hand Detection and Gesture Classification:</h2>
+    <code>
+        hands, img = detector.findHands(img)
+    </code>
+    <p>
+        - Using HandDetector to find hands in the image.
+    </p>
+</div>
+
+<!-- 8. Hand Gesture Processing -->
+<div class="section">
+    <h2>8. Hand Gesture Processing:</h2>
+    <code>
+        if hands:<br>
+            # ... (processing hand gesture, resizing, classifying, and updating UI)<br>
+        else:<br>
+            countDown = 0<br>
+            result = ''
+    </code>
+    <p>
+        - If hands are detected, the script processes the hand gesture by cropping, resizing, and classifying it.<br>
+        - It also updates the UI with information about the AI's and the user's choices.<br>
+        - If no hands are detected, counters are reset.
+    </p>
+</div>
+
+<!-- 9. Displaying the Image and Handling Key Inputs -->
+<div class="section">
+    <h2>9. Displaying the Image and Handling Key Inputs:</h2>
+    <code>
+        imgOutput = cv2.resize(imgOutput, (1024, 768))<br>
+        cv2.imshow("Image", imgOutput)<br>
+    </code>
+    <p>
+        - The processed image is displayed with OpenCV.<br>
+        - The script also listens for key inputs ('r' to reset scores, 'q' to quit the game).
+    </p>
+</div>
+
+<!-- Next Button -->
+<button id="nextButton" onclick="showNextSection()">Next</button>
+
+</body>
+</html>
